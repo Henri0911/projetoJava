@@ -1,0 +1,536 @@
+package entidade;
+
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.Locale;
+import java.util.Scanner;
+
+public class Cadastro {
+
+	// Variavel
+	private String nome;
+	private int idade;
+	private String cpf;
+	private String endereco;
+	private String email;
+	private int senha;
+	private String celular;
+	private String facebook;
+	private String instagram;
+	private String servico;
+	private String quantoTempo;
+	private String mediaValor;
+
+	private int e = 0; // para fazer tratamento de erro!!!
+
+	Scanner sc = new Scanner(System.in);
+	Menu menu = new Menu();
+
+	/*-------------------------------------------------------------------------------------------------------------*/
+
+	// Construtores
+	public Cadastro() {
+	}
+
+	public Cadastro(String cpf, int senha) {
+		this.cpf = cpf;
+		this.senha = senha;
+	}
+
+	public Cadastro(String nome, int idade, String cpf, String endereco, String email, int senha) {
+		this.nome = nome;
+		this.idade = idade;
+		this.cpf = cpf;
+		this.endereco = endereco;
+		this.email = email;
+		this.senha = senha;
+	}
+
+	/*-------------------------------------------------------------------------------------------------------------*/
+
+	// Get e Set
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public int getIdade() {
+		return idade;
+	}
+
+	public void setIdade(int idade) {
+		this.idade = idade;
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	public String getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public int getSenha() {
+		return senha;
+	}
+
+	public void setSenha(int senha) {
+		this.senha = senha;
+	}
+
+	// Get e Set para tratar erro
+	public int getE() {
+		return e;
+	}
+
+	public void setE(int e) {
+		this.e = e;
+	}
+
+	public String getCelular() {
+		return celular;
+	}
+
+	public void setCelular(String celular) {
+		this.celular = celular;
+	}
+
+	public String getFacebook() {
+		return facebook;
+	}
+
+	public void setFacebook(String facebook) {
+		this.facebook = facebook;
+	}
+
+	public String getInstagram() {
+		return instagram;
+	}
+
+	public void setInstagram(String instagram) {
+		this.instagram = instagram;
+	}
+
+	public String getServico() {
+		return servico;
+	}
+
+	public void setServico(String servico) {
+		this.servico = servico;
+	}
+
+	public String getQuantoTempo() {
+		return quantoTempo;
+	}
+
+	public void setQuantoTempo(String quantoTempo) {
+		this.quantoTempo = quantoTempo;
+	}
+
+	public String getMediaValor() {
+		return mediaValor;
+	}
+
+	public void setMediaValor(String mediaValor) {
+		this.mediaValor = mediaValor;
+	}
+
+	/*-------------------------------------------------------------------------------------------------------------*/
+
+	// Método para fazer cadastro principal
+	public void fazerCadastro() {
+		Locale.setDefault(Locale.US);
+
+		System.out.println("**************");
+		System.out.println("***CADASTRO***");
+		System.out.println("**************\n");
+		System.out.println("Iniciando cadastro..\n");
+
+		// RECEBE NOME
+		System.out.print("Nome: ");
+		this.setNome(sc.nextLine());
+
+		// RECEBE E TRATA IDADE
+		boolean again = true;
+		while (again) {
+
+			try {
+				System.out.print("Idade: ");
+				this.setE(sc.nextInt());
+
+			} catch (InputMismatchException e) {
+				System.out.println("\nErro!!! - Utilize apenas números... ");
+				sc.nextInt();
+			}
+			if (this.getE() < 18 || this.getE() > 100) {
+				System.out.println("\nErro!!! - Idade Inválida (Válido apenas de 18 a 100 anos).");
+			} else {
+				this.setIdade(getE());
+				again = false;
+			}
+		}
+
+		sc.nextLine();
+
+		// cpf
+		boolean cpfValido = false;
+		while (!cpfValido) {
+			System.out.println("CPF: ");
+			this.setCpf(sc.next());
+			
+			if (validarCPF(getCpf())) {
+				System.out.println("CPF válido! ");
+				cpfValido = true;
+			}
+			else {
+				System.out.println("CPF inválido! Por favor, insira um CPF válido.");
+			}
+		}
+		
+		sc.nextLine();
+
+		// Endereço
+		System.out.print("Endereço: ");
+		this.setEndereco(sc.nextLine());
+
+		// Email
+		System.out.print("E-mail: ");
+		this.setEmail(sc.nextLine());
+
+		// Senha
+		System.out.print("Senha: ");
+		this.setSenha(sc.nextInt());
+
+		sc.nextLine();
+
+		System.out.println("\n \nCadastro Concluído!!! :) ");
+		menu.clear();
+	}
+
+	/*-------------------------------------------------------------------------------------------------------------*/
+
+	// Crie um ArrayList para armazenar objetos da classe Cadastro
+	ArrayList<Cadastro> lista = new ArrayList<>();
+
+	// Método para criar e adicionar um novo cadastro à lista
+	public void criarCadastro() {
+
+		// Crie um novo objeto Cadastro
+		Cadastro novoCadastro = new Cadastro();
+
+		// Preencha os dados do cadastro usando o método fazerCadastro()
+		novoCadastro.fazerCadastro();
+
+		// Adicione o objeto Cadastro ao ArrayList
+		lista.add(novoCadastro);
+	}
+
+	/*-------------------------------------------------------------------------------------------------------------*/
+
+	// Método para imprimir detalhes dos cadastros na lista
+	public void imprimirCadastros() {
+
+		// Itera sobre o ArrayList e imprime os detalhes de cada objeto Cadastro
+		for (Cadastro cadastro : lista) {
+			System.out.println("**********************************************************************");
+			System.out.println("Nome: " + cadastro.getNome());
+			System.out.println("Idade: " + cadastro.getIdade());
+			System.out.println("CPF: " + cadastro.getCpf());
+			System.out.println("Endereço: " + cadastro.getEndereco());
+			System.out.println("E-mail: " + cadastro.getEmail());
+			System.out.println("Senha: ******** \n");
+			System.out.println("**********************************************************************");
+			System.out.println("\n \nDigite qualquer número para voltar no menu.");
+			menu.clear();
+		}
+	}
+
+	/*-------------------------------------------------------------------------------------------------------------*/
+
+	// Método para verificar se um CPF e senha correspondem a algum cadastro na
+	// lista
+	public boolean verificarLogin(String cpf, int senha) {
+		for (Cadastro cadastro : lista) {
+
+			if (cadastro.getCpf().equals(cpf) && cadastro.getSenha() == senha) {
+				return true; // CPF e senha correspondem a um cadastro na lista
+
+			}
+		}
+
+		return false; // CPF e senha não correspondem a nenhum cadastro na lista
+
+	}
+
+	/*-------------------------------------------------------------------------------------------------------------*/
+
+	// Método para criar serviços
+	public void cadastrarServico() {
+
+		System.out.println("**************");
+		System.out.println("***CADASTRO***");
+		System.out.println("**************\n");
+		System.out.println("Iniciando cadastro..\n");
+		System.out.println("\n***Redes Sociais***\n");
+
+		System.out.print("\nInforme seu celular com WhatsApp: ");
+		this.setCelular(sc.nextLine());
+
+		System.out.print("\nInforme sua Home Page do Facebook: ");
+		this.setFacebook(sc.nextLine());
+
+		System.out.print("\nInforme sua Home Page do Instagram: ");
+		this.setInstagram(sc.nextLine());
+
+		System.out.println("\n***Profissão***\n");
+
+		System.out.println("\nInforme, com o que trabalha ? ");
+		this.setServico(sc.nextLine());
+
+		System.out.println("\nInforme, quanto tempo trabalha com isso ? ");
+		this.setQuantoTempo(sc.nextLine());
+
+		System.out.println("\nInforme, média de valor que cobra por dia ou hora ? ");
+		this.setMediaValor(sc.nextLine());
+
+		System.out.println();
+		System.out.println("\nCadastro Concluído!!! :) \n");
+		System.out.println("\n \nEm breve nossa equipe vai entar em contato!");
+		menu.clear();
+	}
+
+	/*-------------------------------------------------------------------------------------------------------------*/
+
+	// nova Array para cadastrar serviços
+	ArrayList<Cadastro> listaServico = new ArrayList<>();
+
+	// Método para criar e adicionar um novo cadastro de serviços
+	public void criarServico() {
+
+		// Crie um novo objeto Cadastro
+		Cadastro novoServico = new Cadastro();
+
+		// Preencha os dados do cadastro usando o método fazerCadastro()
+		novoServico.cadastrarServico();
+
+		// Adicione o objeto Cadastro ao ArrayList
+		listaServico.add(novoServico);
+	}
+
+	/*-------------------------------------------------------------------------------------------------------------*/
+
+	// Método para imprimir detalhes dos cadastros na lista
+	public void imprimirServico() {
+
+		// Itera sobre o ArrayList e imprime os detalhes de cada objeto Cadastro
+		for (Cadastro cadastro : listaServico) {
+			System.out.println("**********************************************************************");
+			System.out.println("\n***Redes Sociais***\n");
+			System.out.println("Celular com WhatsApp: " + cadastro.getCelular());
+			System.out.println("Home Page Facebook: " + cadastro.getFacebook());
+			System.out.println("Home Page Instagram: " + cadastro.getInstagram());
+			System.out.println("\n***Profissão***\n");
+			System.out.println("Serviço: " + cadastro.getServico());
+			System.out.println("Quanto tempo no ramo:  " + cadastro.getQuantoTempo());
+			System.out.println("Media de valor: " + cadastro.getMediaValor());
+			System.out.println("**********************************************************************");
+			System.out.println();
+			System.out.println("\n \nEm breve nossa equipe vai entar em contato!");
+			System.out.println("\n \n \nDigite qualquer número para voltar no menu.");
+			System.out.println();
+			menu.clear();
+		}
+	}
+	/*-------------------------------------------------------------------------------------------------------------*/
+
+	// Método com serviços cadastrados
+
+	public void imprimirDiaristas() {
+
+		// diaristas
+		String diarista1 = """
+				Nome: Raimunda \n
+				Celular/WhatsApp: 11 958884646 \n
+				Facebook: Raimunda I Saw You Saying \n
+				Instagram: Raimunda I Saw You Saying \n
+				Quanto tempo no ramo: 12 anos \n
+				Media de valor: 150 diaria.
+				""";
+		System.out.println(diarista1);
+		System.out.println();
+
+		String diarista2 = """
+				Nome: Abigail \n
+				Celular/WhatsApp: 11 956665846 \n
+				Facebook: Abigail Diamond \n
+				Instagram: Abigail Diamond \n
+				Quanto tempo no ramo: 30 anos \n
+				Media de valor: 130 diaria.
+				""";
+		System.out.println(diarista2);
+	}
+
+	public void imprimirEncanadores() {
+		// encanador
+		String encanador1 = """
+				Nome: Mario \n
+				Celular/WhatsApp: 11 3197-4895 \n
+				Facebook: it me Mario \n
+				Instagram: it me Mario \n
+				Quanto tempo no ramo: 25 anos \n
+				Media de valor: 50 Hora.
+				""";
+		System.out.println(encanador1);
+		System.out.println();
+
+		String encanador2 = """
+				Nome: Luigi \n
+				Celular/WhatsApp: 11 3197-4895 \n
+				Facebook: it me Luigi \n
+				Instagram: it me Luigi \n
+				Quanto tempo no ramo: 24 anos \n
+				Media de valor: 50 Hora.
+				""";
+		System.out.println(encanador2);
+	}
+
+	public void imprimirMecanicos() {
+		// Mecanico
+		String mecanico1 = """
+				Nome: Till Lindemann \n
+				Celular/WhatsApp: 11 92001-4895 \n
+				Facebook: Till Sonne \n
+				Instagram: Till Sonne \n
+				Quanto tempo no ramo: 29 anos \n
+				Media de valor: Combinar
+				""";
+		System.out.println(mecanico1);
+		System.out.println();
+
+		String mecanico2 = """
+				Nome: James \n
+				Celular/WhatsApp: 11 91986-4495 \n
+				Facebook: MetallicaR \n
+				Instagram: MetallicaR \n
+				Quanto tempo no ramo: 35 anos \n
+				Media de valor: Combinar
+				""";
+		System.out.println(mecanico2);
+	}
+
+	public void imprimirPedreiro() {
+		// pedreiro
+		String pedreiro1 = """
+				Nome: Serj \n
+				Celular/WhatsApp: 11 92561-3588 \n
+				Facebook: Serj SOAD \n
+				Instagram: Serj SOAD \n
+				Quanto tempo no ramo: 29 anos \n
+				Media de valor: 150 Diaria
+				""";
+		System.out.println(pedreiro1);
+	}
+
+	public void imprimirPintor() {
+		// pintor
+		String pintor1 = """
+				Nome: Anthony \n
+				Celular/WhatsApp: 11 5561-2003 \n
+				Facebook: Anthony Red H \n
+				Instagram: Anthony Red H \n
+				Quanto tempo no ramo: 30 anos \n
+				Media de valor: 120 Diaria
+				""";
+		System.out.println(pintor1);
+		System.out.println();
+
+		String pintor2 = """
+				Nome: Kurt \n
+				Celular/WhatsApp: 11 5561-1990 \n
+				Facebook: Kurt Love \n
+				Instagram: Kurt Love \n
+				Quanto tempo no ramo: 33 anos \n
+				Media de valor: 150 Diaria
+				""";
+		System.out.println(pintor2);
+	}
+
+	public void imprimirConfeiteiro() {
+
+		// confeiteiro
+		String confeiteiro1 = """
+				Nome: Freddie \n
+				Celular/WhatsApp: 11 96924-1970 \n
+				Facebook: The Queen \n
+				Instagram: The Queen \n
+				Quanto tempo no ramo: 50 anos \n
+				Media de valor: 150 Diaria
+				""";
+		System.out.println(confeiteiro1);
+	}
+
+	/*-------------------------------------------------------------------------------------------------------------*/
+
+	public static boolean validarCPF(String cpf) {
+		// Remover caracteres não numéricos
+		cpf = cpf.replaceAll("[^0-9]", "");
+
+		// Verificar se o CPF tem 11 dígitos
+		if (cpf.length() != 11) {
+			return false;
+		}
+
+		// Verificar se todos os dígitos são iguais
+		if (cpf.matches("(\\d)\\1{10}")) {
+			return false;
+		}
+
+		// Calcular e verificar os dígitos verificadores
+		int[] digitos = new int[11];
+		for (int i = 0; i < 11; i++) {
+			digitos[i] = Integer.parseInt(cpf.substring(i, i + 1));
+		}
+
+		int soma = 0;
+		for (int i = 0; i < 9; i++) {
+			soma += digitos[i] * (10 - i);
+		}
+
+		int resto = soma % 11;
+		int digito1 = (resto < 2) ? 0 : (11 - resto);
+
+		if (digito1 != digitos[9]) {
+			return false;
+		}
+
+		soma = 0;
+		for (int i = 0; i < 10; i++) {
+			soma += digitos[i] * (11 - i);
+		}
+
+		resto = soma % 11;
+		int digito2 = (resto < 2) ? 0 : (11 - resto);
+
+		return digito2 == digitos[10];
+	}
+	/*-------------------------------------------------------------------------------------------------------------*/
+}

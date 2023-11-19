@@ -1,0 +1,331 @@
+package aplicacao;
+
+import java.util.InputMismatchException;
+import java.util.Locale;
+import java.util.Scanner;
+
+import entidade.Cadastro;
+import entidade.Login;
+import entidade.Menu;
+
+public class Program {
+
+	public static void main(String[] args) {
+		// tratar erro de "," para "."
+		Locale.setDefault(Locale.US);
+
+		Menu menu = new Menu();
+		Cadastro cadastro = new Cadastro();
+		Scanner sc = new Scanner(System.in);
+
+		// escolha para menus / again tentar tratar loop de voltar para menu
+		int escolha;
+		boolean loop = true;
+
+		while (loop) {
+
+			menu.logo();
+			System.out.println("Bem-Vindo ao Fast Trampos: " + "\nDigite 1 - Para Cadastrar novo Usuário "
+					+ "\nDigite 2 - Para fazer login " + "\nDigite 3 - Para fechar o programa ");
+
+			escolha = sc.nextInt();
+
+			// limpar menu
+			//menu.clear();
+
+			switch (escolha) {
+
+			case 0:
+				System.out.println("Teste de loop :)");
+				break;
+
+			// Criar cadastro
+			case 1:
+
+				int n = 0;
+				cadastro.criarCadastro();
+				boolean again = true;
+				while (again == true) {
+
+					try {
+						System.out.println("\n1 - Imprimir Dados do cliente cadastrado"
+								+ "\nOutro numero - voltar ao MENU PRINCIPAL");
+						n = sc.nextInt();
+
+					} catch (InputMismatchException ex) {
+
+						System.out.println("\nERRO - utilize apenas números para navegar pelos menus ");
+						sc.next();
+					}
+					if (n != 1) {
+						System.out.println("\nRetornando ao Menu Principal");
+						again = false;
+
+					} else {
+						cadastro.imprimirCadastros();
+						sc.next();
+						again = false;
+					}
+				}
+
+				break;
+
+			// validação de usuario
+			case 2:
+
+				boolean loginBemSucedido = false;
+				String cpf;
+				int senha;
+
+				menu.facaLogin();
+
+				// Solicite CPF e senha ao usuário
+				System.out.print("CPF: ");
+				cpf = sc.next();
+				System.out.print("Senha: ");
+				senha = sc.nextInt();
+
+				// Crie um objeto Login com o CPF e senha fornecidos
+				Login usuarioLogin = new Login(cpf, senha);
+
+				// Valide o login usando o método fazerLogin()
+				loginBemSucedido = usuarioLogin.fazerLogin(cadastro);
+
+				// Verifique se o login foi bem-sucedido
+				if (loginBemSucedido) {
+					System.out.println("Login bem-sucedido! Acesso permitido.");
+
+					menu.clear();
+
+					boolean novoLoop = true;
+					int novaEscolha;
+
+					// Menu principal
+					while (novoLoop) {
+						menu.menu();
+						System.out.println("\nFast Trampos: " + "\nDigite 1 - Para Cadastrar Serviços "
+								+ "\nDigite 2 - Para Procurar Serviços "
+								+ "\nDigite 3 - Para Comprar Plus (**Só para quem vai prestar serviços**) "
+								+ "\nDigite 4 - Para fechar o programa ");
+
+						novaEscolha = sc.nextInt();
+
+						menu.clear();
+
+						switch (novaEscolha) {
+
+						case 0:
+							System.out.println("Novo teste de loop :D");
+							break;
+
+						// Criar serviço
+						case 1:
+							int m = 0;
+							cadastro.criarServico();
+							boolean again2 = true;
+							while (again2) {
+
+								try {
+									System.out.println("\n1 - Imprimir Serviços do cliente cadastrado"
+											+ "\nOutro número - voltar ao MENU PRINCIPAL");
+									m = sc.nextInt();
+								} catch (InputMismatchException ex) {
+									System.out.println("\nERRO - utilize apenas números para navegar pelos menus ");
+									sc.next();
+								}
+								if (m != 1) {
+									System.out.println("\nRetornando ao Menu Principal");
+									again2 = false;
+								} else {
+									cadastro.imprimirServico();
+									sc.next();
+									again = false;
+								}
+							}
+							menu.clear();
+							break;
+
+						// imprimir serviços e contatos
+						case 2:
+							int menuServicos = 0;
+							boolean again3 = true;
+							menu.clear();
+
+//********************************************************************************************************//
+							// Outro loop
+							while (again3) {
+								menu.menuServicos();
+								System.out.println("\nFast Trampos: " + "\nDigite 1 - Diaristas "
+										+ "\nDigite 2 - Encanadores " + "\nDigite 3 - Mecânico "
+										+ "\nDigite 4 - Pedreiros " + "\nDigite 5 - Pintores "
+										+ "\nDigite 6 - Confeiteiros " + "\nDigite 7 - Para Sair "
+										+ "\nDigite Qualquer outro número para voltar para menu");
+								menu.clear();
+
+								menuServicos = sc.nextInt();
+
+//********************************************************************************************************//
+								// começa outro Switch
+								switch (menuServicos) {
+								case 1:
+									System.out.println("Lista de Diaristas");
+									System.out.println();
+
+									System.out.println(
+											"**********************************************************************");
+									cadastro.imprimirDiaristas();
+									System.out.println(
+											"**********************************************************************");
+
+									System.out.println("Digite qualquer número para voltar");
+									String voltar = sc.next();
+
+									break;
+								case 2:
+									System.out.println("Lista de Encanadores");
+									System.out.println();
+
+									System.out.println(
+											"**********************************************************************");
+									cadastro.imprimirEncanadores();
+									System.out.println(
+											"**********************************************************************");
+
+									System.out.println("Digite qualquer número para voltar");
+									voltar = sc.next();
+
+									break;
+								case 3:
+									System.out.println("Lista de Mecanicos");
+									System.out.println();
+
+									System.out.println(
+											"**********************************************************************");
+									cadastro.imprimirMecanicos();
+									System.out.println(
+											"**********************************************************************");
+
+									System.out.println("Digite qualquer número para voltar");
+									voltar = sc.next();
+
+									break;
+								case 4:
+									System.out.println("Lista de Pedreiro");
+									System.out.println();
+
+									System.out.println(
+											"**********************************************************************");
+									cadastro.imprimirPedreiro();
+									System.out.println(
+											"**********************************************************************");
+
+									System.out.println("Digite qualquer número para voltar");
+									voltar = sc.next();
+
+									break;
+								case 5:
+									System.out.println("Lista de Pintores");
+									System.out.println();
+
+									System.out.println(
+											"**********************************************************************");
+									cadastro.imprimirPintor();
+									System.out.println(
+											"**********************************************************************");
+
+									System.out.println("Digite qualquer número para voltar");
+									voltar = sc.next();
+
+									break;
+								case 6:
+									System.out.println("Lista de Confeiteiros");
+									System.out.println();
+
+									System.out.println(
+											"**********************************************************************");
+									cadastro.imprimirConfeiteiro();
+									System.out.println(
+											"**********************************************************************");
+
+									System.out.println("Digite qualquer número para voltar");
+									voltar = sc.next();
+
+									break;
+								case 7:
+									menu.clear();
+									System.out.println(
+											"Você tem certeza que deseja fechar o programa? (Digite 'sim' para confirmar)");
+									String confirmacao = sc.next();
+
+									if (confirmacao.equalsIgnoreCase("sim") || confirmacao.equalsIgnoreCase("Sim")
+											|| confirmacao.equalsIgnoreCase("SIM") || confirmacao.equalsIgnoreCase("s")
+											|| confirmacao.equalsIgnoreCase("S")) {
+
+										System.out.println("\nAté mais o/ ");
+										System.exit(0);
+									} else {
+
+										System.out.println("\nOperação cancelada. Retornando ao Menu Principal.");
+										loop = true;
+										menu.clear();
+									}
+									break;
+
+								default:
+									System.out.println("Voltando para Menu");
+									again3 = false;
+									break;
+
+								}
+							}
+							break;
+						case 3:
+							System.out.println("Desculpe! serviço em Manutenção");
+							break;
+
+						case 4:
+							menu.clear();
+							System.out.println(
+									"Você tem certeza que deseja fechar o programa? (Digite 'sim' para confirmar)");
+							String confirmacao = sc.next();
+
+							if (confirmacao.equalsIgnoreCase("sim") || confirmacao.equalsIgnoreCase("Sim")
+									|| confirmacao.equalsIgnoreCase("SIM") || confirmacao.equalsIgnoreCase("s")
+									|| confirmacao.equalsIgnoreCase("S")) {
+
+								System.out.println("\nAté mais o/ ");
+								System.exit(0);
+
+							} else {
+
+								System.out.println("\nOperação cancelada. Retornando ao Menu Principal.");
+								loop = true;
+								menu.clear();
+							}
+							break;
+
+						default:
+							System.out.println("Selecione um número correto.");
+							loop = true;
+							break;
+
+						}
+					}
+					menu.clear();
+				} else {
+					menu.clear();
+					System.out.println("Login falhou. CPF e/ou senha inválidos. Acesso negado.");
+					menu.clear();
+				}
+				break;
+
+			default:
+				System.out.println("Selecione um número correto.");
+				loop = true;
+				break;
+
+			}// fim switch
+
+		}
+	}
+}
